@@ -1,5 +1,8 @@
 library(dplyr)
 
+# try exporting as excel file: look for library
+# xlsx write.xlsx
+
 # read datasets
 accident <- read.csv("FARS2022NationalCSV/accident.csv", encoding = "latin1")
 person <- read.csv("FARS2022NationalCSV/person.csv", encoding = "latin1")
@@ -23,6 +26,8 @@ combined_midwest_data <- midwest_accident %>%
 
 # remove duplicate ST_CASE entries, keeping the first occurrence
 combined_midwest_data_unique <- combined_midwest_data %>% distinct(ST_CASE, .keep_all = TRUE)
+
+# Not necessary to export
 
 # saves the deduplicated dataset to csv
 write.csv(combined_midwest_data_unique, "combined_midwest_data.csv", row.names = FALSE)
