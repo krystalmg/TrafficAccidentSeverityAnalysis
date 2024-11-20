@@ -96,7 +96,7 @@ df_filtered <- df %>% filter(FATALS < 900, TRAV_SP < 900, AGE < 98, HOUR.x <= 24
 
 ## SHOW CORRELATION ##
 # Correlation Matrix for Continuous
-subset_df <- df[c("FATALS", "TRAV_SP", "AGE", "HOUR.x")]
+subset_df <- df_filtered[c("FATALS", "TRAV_SP", "AGE", "HOUR.x")]
 cor_matrix_sub <- cor(subset_df)
 print(cor_matrix_sub)
 
@@ -128,6 +128,7 @@ ggplot(area_fatals_counts, aes(x = AreaClass, y = FATALS, fill = n)) +
   geom_tile() +
   scale_fill_gradient(low = "lightblue", high = "darkblue") +
   labs(fill = "Count")
+
 
 ## RESIDUAL PLOTS ##
 # Convert categorical variables to dummies
