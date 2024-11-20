@@ -10,7 +10,6 @@ attach(df)
 
 dim(df)
 print(df)
-plot(df)
 
 # Show the variables 
 # Response: (FATALS)
@@ -90,6 +89,11 @@ ggplot(df, aes(x = AreaClass)) +
   labs(title = "Bar Graph of Area Classification (Rural/Urban)", x = "Classification", y = "Count") +
   theme_minimal()
 
+## VARIABLE VALUE CORRECTION - Remove Obvious Outliers from Continuous Variables ##
+# Filter out rows in all continuous columns where the value is greater than or equal to 997
+df_filtered <- df %>% filter(FATALS < 900, TRAV_SP < 900, AGE < 98, HOUR.x <= 24)
+
+
 ## SHOW CORRELATION ##
 # Correlation Matrix for Continuous
 subset_df <- df[c("FATALS", "TRAV_SP", "AGE", "HOUR.x")]
@@ -125,13 +129,13 @@ ggplot(area_fatals_counts, aes(x = AreaClass, y = FATALS, fill = n)) +
   scale_fill_gradient(low = "lightblue", high = "darkblue") +
   labs(fill = "Count")
 
-## PARTIAL REGRESSION PLOT ##
-# Convert categorical variables to factors
-df$RouteCategory <- factor(df$RouteCategory)
-df$LightCond <- factor(df$LightCond)
-df$AreaClass <- factor(df$AreaClass)
+## RESIDUAL PLOTS ##
+# Convert categorical variables to dummies
+df_filtered$RouteCategory <- factor(df_filtered$RouteCategory)
+df_filtered$LightCond <- factor(df_filtered$LightCond)
+df_filtered$AreaClass <- factor(df_filtered$AreaClass)
 
-model <- lm(FATALS ~ RouteCategory + LightCond + AreaClass + TRAV_SP + AGE + HOUR.x, data = df)
+model <- lm(FATALS ~ RouteCategory + LightCond + AreaClass + TRAV_SP + AGE + HOUR.x, data = df_filtered)
 
 summary(model)
 crPlots(model)
